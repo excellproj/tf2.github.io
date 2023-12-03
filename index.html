@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Configurator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #mainTextArea {
+            width: 100%;
+            height: 100px;
+        }
+
+        #configOptions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        #configOptions div {
+            width: 48%;
+        }
+
+        #outputArea {
+            margin-top: 10px;
+        }
+
+        #bulkOptions {
+            margin-top: 10px;
+            display: none;
+        }
+
+        #bulkOutput {
+            margin-top: 10px;
+        }
+
+        #copyButton {
+            cursor: pointer;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #resetButton {
+            cursor: pointer;
+            padding: 5px 10px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <textarea id="mainTextArea" placeholder="Enter your text here..."></textarea>
+
+    <div id="configOptions">
+        <div>
+            <label><input type="checkbox" id="addCheckbox"> !add</label>
+            <label><input type="checkbox" id="updateCheckbox"> !update</label>
+            <label><input type="checkbox" id="addBulkCheckbox"> !addbulk</label>
+            <label><input type="checkbox" id="removeBulkCheckbox"> !removebulk</label>
+        </div>
+        <div>
+            <label><input type="checkbox" id="nameCheckbox"> name</label>
+            <label><input type="checkbox" id="skuCheckbox"> sku</label>
+            <label><input type="checkbox" id="itemCheckbox"> item</label>
+        </div>
+    </div>
+
+    <button id="resetButton" onclick="resetText()">Reset</button>
+    <button id="copyButton" onclick="copyToClipboard()">Copy</button>
+
+    <div id="outputArea"></div>
+
+    <div id="bulkOptions">
+        <textarea id="bulkOutput" readonly></textarea>
+        <button onclick="copyBulkToClipboard()">Copy Bulk Output</button>
+    </div>
+
+    <script>
+        function resetText() {
+            document.getElementById('mainTextArea').value = '';
+            updateOutputArea();
+        }
+
+        function copyToClipboard() {
+            var outputText = generateOutputText();
+            copyTextToClipboard(outputText);
+        }
+
+        function generateOutputText() {
+            // Implement your logic to generate output text based on checkboxes
+            var outputText = '';
+            return outputText;
+        }
+
+        function copyTextToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Text copied to clipboard!');
+            }, function(err) {
+                console.error('Unable to copy to clipboard', err);
+            });
+        }
+
+        function copyBulkToClipboard() {
+            var bulkOutputText = document.getElementById('bulkOutput').value;
+            copyTextToClipboard(bulkOutputText);
+        }
+
+        function updateOutputArea() {
+            var outputText = generateOutputText();
+            document.getElementById('outputArea').innerText = outputText;
+
+            var bulkOutputText = generateBulkOutputText();
+            document.getElementById('bulkOutput').value = bulkOutputText;
+
+            if (bulkOutputText.trim() === '') {
+                document.getElementById('bulkOptions').style.display = 'none';
+            } else {
+                document.getElementById('bulkOptions').style.display = 'block';
+            }
+        }
+
+        function generateBulkOutputText() {
+            // Implement your logic to generate bulk output text based on checkboxes
+            var bulkOutputText = '';
+            return bulkOutputText;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var checkboxes = document.querySelectorAll('input[type=checkbox]');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', updateOutputArea);
+            });
+        });
+    </script>
+</body>
+</html>
